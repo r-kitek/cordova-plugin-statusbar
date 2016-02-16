@@ -143,15 +143,27 @@ public class StatusBar extends CordovaPlugin {
         }
 
         if ("styleLightContent".equals(action)) {
-			  return setStatusBarLightiOnUiThread(true);
+			  boolean res = setStatusBarLightiOnUiThread(true);
+			  if (res) {
+				  callbackContext.success();
+			  }
+			  return res;
 		  }
 
         if ("styleBlackOpaque".equals(action)) {
-				return setStatusBarLightiOnUiThread(false);
+				boolean res = setStatusBarLightiOnUiThread(false);
+			   if (res) {
+				   callbackContext.success();
+			   }
+			   return res;
 		  }
 
         if ("styleDefault".equals(action)) {
-				return setStatusBarLightiOnUiThread(false);
+				boolean res = setStatusBarLightiOnUiThread(false);
+			   if (res) {
+				   callbackContext.success();
+			   }
+			   return res;
 		  }
 
         if ("styleBlackTranslucent".equals(action)) {

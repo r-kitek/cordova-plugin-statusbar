@@ -67,6 +67,24 @@ var StatusBar = {
         // #FF000000 ? Apple says to use lightContent instead
         exec(null, null, "StatusBar", "styleBlackOpaque", []);
     },
+    styleDefaultExtended: function (successCb, failureCb) {
+        // dark text ( to be used on a light background )
+        exec(successCb, failureCb, "StatusBar", "styleDefault", []);
+    },
+
+	 styleLightContentExtended: function (successCb, failureCb) {
+        exec(successCb, failureCb, "StatusBar", "styleLightContent", []);
+	 },
+
+    styleBlackTranslucentExtended: function (successCb, failureCb) {
+        // #88000000 ? Apple says to use lightContent instead
+        exec(successCb, failureCb, "StatusBar", "styleBlackTranslucent", []);
+    },
+
+    styleBlackOpaqueExtended: function (successCb, failureCb) {
+        // #FF000000 ? Apple says to use lightContent instead
+        exec(successCb, failureCb, "StatusBar", "styleBlackOpaque", []);
+    },
 
     backgroundColorByName: function (colorname) {
         return StatusBar.backgroundColorByHexString(namedColors[colorname]);

@@ -61,7 +61,7 @@ Preferences
 
         <preference name="StatusBarBackgroundColor" value="#000000" />
 
-- __StatusBarStyle__ (status bar style, defaults to lightcontent). On iOS 7, set the status bar style. Available options default, lightcontent, blacktranslucent, blackopaque.
+- __StatusBarStyle__ (status bar style, defaults to lightcontent). On iOS 7 and Android 5.0+, set the status bar style. Available options default, lightcontent, blacktranslucent, blackopaque.
 
         <preference name="StatusBarStyle" value="lightcontent" />
 
@@ -99,10 +99,10 @@ Although in the global scope, it is not available until after the `deviceready` 
     }
 
 - StatusBar.overlaysWebView
-- StatusBar.styleDefault
-- StatusBar.styleLightContent
-- StatusBar.styleBlackTranslucent
-- StatusBar.styleBlackOpaque
+- StatusBar.styleDefault (also Extended version with success/error callbacks)
+- StatusBar.styleLightContent (also Extended version with success/error callbacks)
+- StatusBar.styleBlackTranslucent 
+- StatusBar.styleBlackOpaque (also Extended version with success/error callbacks)
 - StatusBar.backgroundColorByName
 - StatusBar.backgroundColorByHexString
 - StatusBar.hide
@@ -163,6 +163,7 @@ Supported Platforms
 -------------------
 
 - iOS
+- Android 5.0+
 - Windows Phone 7
 - Windows Phone 8
 - Windows Phone 8.1
@@ -179,6 +180,7 @@ Supported Platforms
 -------------------
 
 - iOS
+- Android 5.0+
 - Windows Phone 7
 - Windows Phone 8
 - Windows Phone 8.1
@@ -211,6 +213,7 @@ Supported Platforms
 -------------------
 
 - iOS
+- Android 5.0+
 - Windows Phone 7
 - Windows Phone 8
 - Windows Phone 8.1

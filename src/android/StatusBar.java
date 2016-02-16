@@ -143,18 +143,19 @@ public class StatusBar extends CordovaPlugin {
         }
 
         if ("styleLightContent".equals(action)) {
-			   setStatusBarLight(true);
-				return true;
+			  return setStatusBarLightiOnUiThread(true);
 		  }
 
         if ("styleBlackOpaque".equals(action)) {
-			   return true;
-				setStatusBarLight(false);
+				return setStatusBarLightiOnUiThread(false);
 		  }
 
         if ("styleDefault".equals(action)) {
-			   return true;
-				setStatusBarLight(false);
+				return setStatusBarLightiOnUiThread(false);
+		  }
+
+        if ("styleBlackTranslucent".equals(action)) {
+			  return false; //Not supported on android
 		  }
 
         return false;
@@ -180,28 +181,39 @@ public class StatusBar extends CordovaPlugin {
         }
     }
 
-    private void setStatusBarLight(final boolean isLight) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            this.cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-						 final Window window = cordova.getActivity().getWindow();
-						 // Method and constants not available on all SDKs but we want to be able to compile this code with any SDK
-						 window.clearFlags(0x04000000); // SDK 19: WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-						 window.addFlags(0x80000000); // SDK 21: WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-                   int uiOptions = window.getDecorView().getSystemUiVisibility();
-						 if (isLight) { 
-							 uiOptions |= 0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-						 } else {
-							 uiOptions &= ~0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-						 }
-						 
-						 window.getDecorView().setSystemUiVisibility(uiOptions);
-                }
-            });
+	 private boolean statusBarLightIsSupported() {
+			return (Build.VERSION.SDK_INT >= 23); 
+	 }
+
+    private boolean setStatusBarLightiOnUiThread(final boolean isLight) {
+			this.cordova.getActivity().runOnUiThread(new Runnable() {
+				 @Override
+				 public void run() {
+					 setStatusBarLight(isLight);
+				 }
+			});
+		
+		 return statusBarLightIsSupported();
+	 }
+
+    private void setStatusBarLight(final boolean isLight) {
+        if (statusBarLightIsSupported()) {
+				 final Window window = cordova.getActivity().getWindow();
+				 // Method and constants not available on all SDKs but we want to be able to compile this code with any SDK
+				 window.clearFlags(0x04000000); // SDK 19: WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+				 window.addFlags(0x80000000); // SDK 21: WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+				 int uiOptions = window.getDecorView().getSystemUiVisibility();
+				 if (isLight) { 
+					 uiOptions |= 0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+				 } else {
+					 uiOptions &= ~0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+				 }
+				 
+				 window.getDecorView().setSystemUiVisibility(uiOptions);
 			} else {
-				  Log.w(TAG, "SYSTEM_UI_FLAG_LIGHT_STATUS_BAR is not supported for this SDK level " + Build.VERSION.SDK_INT);
+				 Log.w(TAG, "SYSTEM_UI_FLAG_LIGHT_STATUS_BAR is not supported for this SDK level " + Build.VERSION.SDK_INT);
 			}
     }
 }

@@ -143,7 +143,7 @@ public class StatusBar extends CordovaPlugin {
         }
 
         if ("styleLightContent".equals(action)) {
-			  boolean res = setStatusBarLightiOnUiThread(true);
+			  boolean res = setStatusBarLightContentOnUiThread(true);
 			  if (res) {
 				  callbackContext.success();
 			  }
@@ -151,7 +151,7 @@ public class StatusBar extends CordovaPlugin {
 		  }
 
         if ("styleBlackOpaque".equals(action)) {
-				boolean res = setStatusBarLightiOnUiThread(false);
+				boolean res = setStatusBarLightContentOnUiThread(false);
 			   if (res) {
 				   callbackContext.success();
 			   }
@@ -159,7 +159,7 @@ public class StatusBar extends CordovaPlugin {
 		  }
 
         if ("styleDefault".equals(action)) {
-				boolean res = setStatusBarLightiOnUiThread(false);
+				boolean res = setStatusBarLightContentOnUiThread(false);
 			   if (res) {
 				   callbackContext.success();
 			   }
@@ -194,33 +194,33 @@ public class StatusBar extends CordovaPlugin {
     }
 
 
-	 private boolean statusBarLightIsSupported() {
+	 private boolean statusBarLightContentIsSupported() {
 			return (Build.VERSION.SDK_INT >= 23); 
 	 }
 
-    private boolean setStatusBarLightiOnUiThread(final boolean isLight) {
+    private boolean setStatusBarLightContentOnUiThread(final boolean isLight) {
 			this.cordova.getActivity().runOnUiThread(new Runnable() {
 				 @Override
 				 public void run() {
-					 setStatusBarLight(isLight);
+					 setStatusBarLightContent(isLight);
 				 }
 			});
 		
-		 return statusBarLightIsSupported();
+		 return statusBarLightContentIsSupported();
 	 }
 
-    private void setStatusBarLight(final boolean isLight) {
-        if (statusBarLightIsSupported()) {
+    private void setStatusBarLightContent(final boolean isLightContent) {
+        if (statusBarLightContentIsSupported()) {
 				 final Window window = cordova.getActivity().getWindow();
 				 // Method and constants not available on all SDKs but we want to be able to compile this code with any SDK
 				 window.clearFlags(0x04000000); // SDK 19: WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 				 window.addFlags(0x80000000); // SDK 21: WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 				 int uiOptions = window.getDecorView().getSystemUiVisibility();
-				 if (isLight) { 
-					 uiOptions |= 0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-				 } else {
+				 if (isLightContent) { 
 					 uiOptions &= ~0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+				 } else {
+					 uiOptions |= 0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 				 }
 				 
 				 window.getDecorView().setSystemUiVisibility(uiOptions);

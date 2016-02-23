@@ -301,11 +301,15 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 - (void) styleDefault:(CDVInvokedUrlCommand*)command
 {
     [self setStyleForStatusBar:UIStatusBarStyleDefault];
+	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
+        callbackId:command.callbackId]; 
 }
 
 - (void) styleLightContent:(CDVInvokedUrlCommand*)command
 {
     [self setStyleForStatusBar:UIStatusBarStyleLightContent];
+	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
+        callbackId:command.callbackId]; 
 }
 
 - (void) styleBlackTranslucent:(CDVInvokedUrlCommand*)command
@@ -316,6 +320,8 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     # define TRANSLUCENT_STYLE UIStatusBarStyleLightContent
     #endif
     [self setStyleForStatusBar:TRANSLUCENT_STYLE];
+	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
+        callbackId:command.callbackId]; 
 }
 
 - (void) styleBlackOpaque:(CDVInvokedUrlCommand*)command
@@ -326,6 +332,8 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     # define OPAQUE_STYLE UIStatusBarStyleLightContent
     #endif
     [self setStyleForStatusBar:OPAQUE_STYLE];
+	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
+        callbackId:command.callbackId]; 
 }
 
 - (void) backgroundColorByName:(CDVInvokedUrlCommand*)command

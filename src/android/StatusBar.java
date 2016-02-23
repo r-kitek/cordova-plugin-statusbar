@@ -143,7 +143,7 @@ public class StatusBar extends CordovaPlugin {
         }
 
         if ("styleLightContent".equals(action)) {
-			  boolean res = setStatusBarLightContentOnUiThread(true);
+			  boolean res = setStatusBarLightContentOnUiThread();
 			  if (res) {
 				  callbackContext.success();
 			  }
@@ -151,7 +151,7 @@ public class StatusBar extends CordovaPlugin {
 		  }
 
         if ("styleBlackOpaque".equals(action)) {
-				boolean res = setStatusBarLightContentOnUiThread(false);
+				boolean res = setStatusBarDarkContentOnUiThread();
 			   if (res) {
 				   callbackContext.success();
 			   }
@@ -159,11 +159,9 @@ public class StatusBar extends CordovaPlugin {
 		  }
 
         if ("styleDefault".equals(action)) {
-				boolean res = setStatusBarLightContentOnUiThread(false);
-			   if (res) {
-				   callbackContext.success();
-			   }
-			   return res;
+				setStatusBarLightContentOnUiThread();
+				callbackContext.success();
+				return true; //This method should always return true, because it implements default behavior
 		  }
 
         if ("styleBlackTranslucent".equals(action)) {
@@ -194,33 +192,49 @@ public class StatusBar extends CordovaPlugin {
     }
 
 
-	 private boolean statusBarLightContentIsSupported() {
+	 private boolean statusBarContentColorCustomizationIsSupported() {
 			return (Build.VERSION.SDK_INT >= 23); 
 	 }
 
-    private boolean setStatusBarLightContentOnUiThread(final boolean isLight) {
-			this.cordova.getActivity().runOnUiThread(new Runnable() {
-				 @Override
-				 public void run() {
-					 setStatusBarLightContent(isLight);
-				 }
-			});
+    private boolean setStatusBarLightContentOnUiThread() {
+		   if (statusBarContentColorCustomizationIsSupported()) {
+				this.cordova.getActivity().runOnUiThread(new Runnable() {
+					 @Override
+					 public void run() {
+						 setStatusBarDarkContent(false);
+					 }
+				});
+			}
 		
-		 return statusBarLightContentIsSupported();
+		 return true; //It's supported by default on Android
 	 }
 
-    private void setStatusBarLightContent(final boolean isLightContent) {
-        if (statusBarLightContentIsSupported()) {
+    private boolean setStatusBarDarkContentOnUiThread() {
+		   if (statusBarContentColorCustomizationIsSupported()) {
+				this.cordova.getActivity().runOnUiThread(new Runnable() {
+					 @Override
+					 public void run() {
+						 setStatusBarDarkContent(true);
+					 }
+				});
+				return true;
+			}
+		
+		 return false;
+	 }
+
+    private void setStatusBarDarkContent(final boolean isDarkContent) {
+        if (statusBarContentColorCustomizationIsSupported()) {
 				 final Window window = cordova.getActivity().getWindow();
 				 // Method and constants not available on all SDKs but we want to be able to compile this code with any SDK
 				 window.clearFlags(0x04000000); // SDK 19: WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 				 window.addFlags(0x80000000); // SDK 21: WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 				 int uiOptions = window.getDecorView().getSystemUiVisibility();
-				 if (isLightContent) { 
-					 uiOptions &= ~0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-				 } else {
+				 if (isDarkContent) { 
 					 uiOptions |= 0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+				 } else {
+					 uiOptions &= ~0x00002000; //View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 				 }
 				 
 				 window.getDecorView().setSystemUiVisibility(uiOptions);

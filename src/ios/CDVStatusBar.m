@@ -289,6 +289,8 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
         [self styleDefault:nil];
     } else if ([lcStatusBarStyle isEqualToString:@"lightcontent"]) {
         [self styleLightContent:nil];
+    } else if ([lcStatusBarStyle isEqualToString:@"darkcontent"]) {
+        [self styleDarkContent:nil];
     } else if ([lcStatusBarStyle isEqualToString:@"blacktranslucent"]) {
         [self styleBlackTranslucent:nil];
     } else if ([lcStatusBarStyle isEqualToString:@"blackopaque"]) {
@@ -299,13 +301,18 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
 - (void) styleDefault:(CDVInvokedUrlCommand*)command
 {
     [self setStyleForStatusBar:UIStatusBarStyleDefault];
-	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
-        callbackId:command.callbackId]; 
 }
 
 - (void) styleLightContent:(CDVInvokedUrlCommand*)command
 {
     [self setStyleForStatusBar:UIStatusBarStyleLightContent];
+	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
+        callbackId:command.callbackId]; 
+}
+
+- (void) styleDarkContent:(CDVInvokedUrlCommand*)command
+{
+    [self setStyleForStatusBar:UIStatusBarStyleDefault];
 	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
         callbackId:command.callbackId]; 
 }
@@ -318,8 +325,6 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     # define TRANSLUCENT_STYLE UIStatusBarStyleLightContent
     #endif
     [self setStyleForStatusBar:TRANSLUCENT_STYLE];
-	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
-        callbackId:command.callbackId]; 
 }
 
 - (void) styleBlackOpaque:(CDVInvokedUrlCommand*)command
@@ -327,11 +332,9 @@ static const void *kStatusBarStyle = &kStatusBarStyle;
     #if __IPHONE_OS_VERSION_MAX_ALLOWED < 70000
     # define OPAQUE_STYLE UIStatusBarStyleBlackOpaque
     #else
-    # define OPAQUE_STYLE UIStatusBarStyleLightContent
+    # define OPAQUE_STYLE UIStatusBarStyleDefault
     #endif
     [self setStyleForStatusBar:OPAQUE_STYLE];
-	 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] 
-        callbackId:command.callbackId]; 
 }
 
 - (void) backgroundColorByName:(CDVInvokedUrlCommand*)command

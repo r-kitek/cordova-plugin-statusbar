@@ -150,22 +150,12 @@ public class StatusBar extends CordovaPlugin {
 			  return res;
 		  }
 
-        if ("styleBlackOpaque".equals(action)) {
+        if ("styleDarkContent".equals(action)) {
 				boolean res = setStatusBarDarkContentOnUiThread();
 			   if (res) {
 				   callbackContext.success();
 			   }
 			   return res;
-		  }
-
-        if ("styleDefault".equals(action)) {
-				setStatusBarLightContentOnUiThread();
-				callbackContext.success();
-				return true; //This method should always return true, because it implements default behavior
-		  }
-
-        if ("styleBlackTranslucent".equals(action)) {
-			  return false; //Not supported on android
 		  }
 
         return false;

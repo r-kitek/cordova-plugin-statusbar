@@ -229,7 +229,7 @@ public class StatusBar extends CordovaPlugin {
 				 
 				 window.getDecorView().setSystemUiVisibility(uiOptions);
 			} else {
-				 Log.w(TAG, "SYSTEM_UI_FLAG_LIGHT_STATUS_BAR is not supported for this SDK level " + Build.VERSION.SDK_INT);
+				 LOG.w(TAG, "SYSTEM_UI_FLAG_LIGHT_STATUS_BAR is not supported for this SDK level " + Build.VERSION.SDK_INT);
 			}
     }
 }
